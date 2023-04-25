@@ -22,7 +22,8 @@ def assemble_coeffs(cqt, ncoefs):
     """
     cqt = iter(cqt)
     cqt0 = next(cqt)
-    cq0 = np.asarray(cqt0).T
+    cq0 = np.asarray(cqt0, dtype=object).T
+    print(cq0.shape)
     shh = cq0.shape[0]//2
     out = np.empty((ncoefs, cq0.shape[1], cq0.shape[2]), dtype=cq0.dtype)
     
@@ -91,7 +92,7 @@ slicq = NSGT_sliced(scl, args.sllen, args.trlen, fs,
                     )
 
 # Read audio data
-sf = SndReader(args.input, sr=fs, chns=2)
+sf = SndReader(args.input, sr=fs, chns=None)
 signal = sf()
 
 # duration of signal in s
@@ -101,7 +102,7 @@ dur = sf.frames/float(fs)
 ncoefs = int(sf.frames*slicq.coef_factor)
 
 # read slices from audio file and mix down signal, if necessary at all
-if not args.downmix_after:
+if not args.downmix_after and sf.channels > 1:
     signal = ((np.mean(s, axis=0),) for s in signal)
 
 # generator for forward transformation
