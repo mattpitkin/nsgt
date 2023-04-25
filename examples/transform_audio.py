@@ -94,7 +94,7 @@ for _ in range(args.time or 1):
     # forward transform 
     c = nsgt.forward(s)
 
-    c = np.asarray(c)
+    c = np.asarray(c, dtype=object)
     print("Coefficients:", c.shape)
 #        print "c",len(c),N.array(map(len,c))
 
