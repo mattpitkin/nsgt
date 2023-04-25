@@ -43,53 +43,27 @@ except ImportError:
 
 setup_options = {}
 
-if setuptools is None:
-    from distutils.core import setup
-    from distutils.extension import Extension
-else:
-    from setuptools import setup
-    from setuptools.extension import Extension
-    setup_options['test_suite'] = 'tests'
-    
-try:
-    from Cython.Distutils import build_ext
-except ImportError:
-    build_ext = None
+from setuptools import setup
+from setuptools import Extension
+setup_options['test_suite'] = 'tests'
     
 import numpy
 
 
-if build_ext is None:
-    cmdclass = {}
-    ext_modules = []
-else:
-    cmdclass = {'build_ext': build_ext}
-    ext_modules = [
-                   Extension("nsgt._nsgtf_loop", ["nsgt/nsgtf_loop.pyx"]),
-                   Extension("nsgt._nsigtf_loop", ["nsgt/nsigtf_loop.pyx"])
-    ]
+ext_modules = [
+    Extension(
+        "nsgt._nsgtf_loop",
+        sources=["nsgt/nsgtf_loop.pyx"],
+        include_dirs=[numpy.get_include()],
+    ),
+    Extension(
+        "nsgt._nsigtf_loop",
+        sources=["nsgt/nsigtf_loop.pyx"],
+        include_dirs=[numpy.get_include()],
+    ),
+]
 
 setup(
-    name = "nsgt",
-    version = "0.19",
-    author = "Thomas Grill",
-    author_email = "gr@grrrr.org",
-    maintainer = "Thomas Grill",
-    maintainer_email = "gr@grrrr.org",
-    description = "Python implementation of Non-Stationary Gabor Transform (NSGT)",
-    license = "Artistic License",
-    keywords = "fourier gabor",
-    url = "http://grrrr.org/nsgt",
-    requires = ["numpy"],
-    include_dirs = [numpy.get_include()],
-    packages = ['nsgt'],
-    cmdclass = cmdclass,
     ext_modules = ext_modules,
-    classifiers = [
-        "Development Status :: 4 - Beta",
-        "Topic :: Scientific/Engineering :: Mathematics",
-        "License :: OSI Approved :: Artistic License",
-        "Programming Language :: Python"
-    ],
     **setup_options
 )
