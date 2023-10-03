@@ -35,12 +35,12 @@ import numpy as np
 
 from .util import chkM
 
-def nsdual(g, wins, nn, M=None):
+def nsdual(g, wins, nn, M=None, dtype=float):
 
     M = chkM(M,g)
 
     # Construct the diagonal of the frame operator matrix explicitly
-    x = np.zeros((nn,), dtype=float)
+    x = np.zeros((nn,), dtype=dtype)
     for gi,mii,sl in zip(g, M, wins):
         xa = np.square(np.fft.fftshift(gi))
         xa *= mii

@@ -126,7 +126,7 @@ def nsigtf_sl(cseq, gd, wins, nn, Ls=None, real=False, reducedform=0, measurefft
         sl2 = slice(-(Lg//2), None)
         p = (gdii,wr1,wr2,sl1,sl2,temp)
         loopparams.append(p)
-        
+
     # main loop over slices
     for c in chain((c0,),cseq):
         assert len(c) == ln
@@ -136,7 +136,7 @@ def nsigtf_sl(cseq, gd, wins, nn, Ls=None, real=False, reducedform=0, measurefft
         # this could also be nicely parallalized
         fc = mmap(fft, c)
         fc = symm(fc)
-        
+
         # The overlap-add procedure including multiplication with the synthesis windows
         fr = nsigtf_loop(loopparams, fr, fc)
 

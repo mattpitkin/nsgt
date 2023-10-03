@@ -134,7 +134,7 @@ class NSGT_sliced:
 
         self.wins,self.nn = calcwinrange(self.g, self.rfbas, self.sl_len)
         
-        self.gd = nsdual(self.g, self.wins, self.nn, self.M)
+        self.gd = nsdual(self.g, self.wins, self.nn, self.M, dtype=dtype)
         
         self.fwd = lambda fc: nsgtf_sl(fc, self.g, self.wins, self.nn, self.M, real=self.real, reducedform=self.reducedform, measurefft=self.measurefft, multithreading=self.multithreading)
         self.bwd = lambda cc: nsigtf_sl(cc, self.gd, self.wins, self.nn, self.sl_len ,real=self.real, reducedform=self.reducedform, measurefft=self.measurefft, multithreading=self.multithreading)
